@@ -9,9 +9,11 @@ class FetchTimer
 
   def initialize
     @url = "http://api.timezonedb.com"
+    @mutex = Mutex.new
   end
 
   def get_time(time_zone)
+    @mutex.lock
     response = HTTP.get(@url, :params => { :zone => time_zone, :key => "TYI8FA9XP77L", :format => "json" }).to_s
     hash = JSON[response]
 
